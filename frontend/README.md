@@ -1,8 +1,67 @@
-# React + Vite
+# Getting Started with Frontend Development
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 1. Clone the Repository
 
-Currently, two official plugins are available:
+Clone the frontend branch of the repository:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+git clone -b frontend https://github.com/manishdashsharma/up-time-down-time.git
+```
+
+## 2. Create Your Branch
+
+Create a new branch for your frontend work:
+
+```bash
+git checkout -b <your-name-frontend>
+```
+
+## 3. Navigate to Frontend Directory
+
+Access the frontend directory:
+
+```bash
+cd frontend
+```
+
+## 4. Start React Application
+
+Install necessary packages and run the React application:
+
+```bash
+npm install
+npm run dev
+```
+
+## 5. Pull Recent Changes
+
+Before starting work, pull recent changes from the frontend branch:
+
+```bash
+git pull origin frontend
+```
+
+## 6. Work on Your Changes
+
+Make your modifications, stage, and commit them with a descriptive message:
+
+```bash
+git add .
+git commit -m "Descriptive message here"
+```
+
+## 7. Pull Changes Again
+
+Pull any new changes made by others in the frontend branch:
+
+```bash
+git pull origin frontend
+```
+
+## 8. Push Your Changes
+
+Push your changes to your branch:
+
+```bash
+git push origin <your-name-frontend>
+```
