@@ -27,13 +27,13 @@ git clone -b backend https://github.com/manishdashsharma/up-time-down-time.git
 ## Useful Links
 
 - **Documentation:** [Documentation Link](https://yy3wxj.csb.app/)
-- **Health Checkup:** [Health Checkup Link](https://yy3wxj.csb.app/)
+- **Health Checkup:** [Health Checkup Link](https://up-time-down-time-jbazvc53o-manishdashsharma.vercel.app/)
 - **Backend:**
-    - **Development Environment:** [Dev Link](https://yy3wxj.csb.app/)
-    - **Production Environment:** [Production Link](https://yy3wxj.csb.app/)
+    - **Development Environment:** [Dev Link](https://up-time-down-time-jbazvc53o-manishdashsharma.vercel.app/)
+    - **Production Environment:** [Production Link](https://up-time-down-time-jbazvc53o-manishdashsharma.vercel.app/)
 - **Frontend:**
-    - **Development Environment:** [Dev Link](https://yy3wxj.csb.app/)
-    - **Production Environment:** [Production Link](https://yy3wxj.csb.app/)
+    - **Development Environment:** [Dev Link](https://up-time-down-time-jp5k-5m2uajlr0-manishdashsharma.vercel.app/)
+    - **Production Environment:** [Production Link](https://up-time-down-time-jp5k.vercel.app/)
 
 ## Getting Started
 
