@@ -1,7 +1,7 @@
 {
-  "name": "jira-replica",
+  "name": "up-time-down-time",
   "version": "1.0.0",
-  "description": "Jira Replica",
+  "description": "Up-Time-Down-Time is a comprehensive project designed to monitor website uptime and downtime",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/manishdashsharma/Jira-Replica.git"
+    "url": "git+https://github.com/manishdashsharma/up-time-down-time.git"
   },
   "author": "Manish",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/manishdashsharma/Jira-Replica/issues"
+    "url": "https://github.com/manishdashsharma/up-time-down-time/issues"
   },
-  "homepage": "https://github.com/manishdashsharma/Jira-Replica#readme",
+  "homepage": "https://github.com/manishdashsharma/up-time-down-time?tab=readme-ov-file",
   "dependencies": {
     "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
