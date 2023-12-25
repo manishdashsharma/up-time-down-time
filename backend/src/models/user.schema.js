@@ -1,34 +1,54 @@
 import mongoose from "mongoose";
-import AuthRoles from "../utils/authRole.js";
 import bcrypt from "bcryptjs";
 import JWT from "jsonwebtoken";
 import config from "../config/index.js";
 import crypto from "crypto"
 
 const userSchema = new mongoose.Schema({
+    username: {
+        type: String,
+        unique: true,
+        lowercase: true,
+        trim: true, 
+        index: true,
+        required: [true, "Name is required"],
+        maxlength: [50, "Name must be less than 50 chars"]
+    },
     name: {
         type: String,
-        required: ["true", "Name is required"],
-        maxLength: [50, "Name must be less than 50 chars"]
+        required: [true, "Username is required"],
+        maxlength: [50, "Userame must be less than 50 chars"]
     },
     email: {
         type: String,
-        required: ["true", "Email is required"],
+        required: true,
+        unique: true,
+        lowecase: true,
+        trim: true, 
     },
     password: {
         type: String,
         required: [true, "Password is required"],
-        minLength: [8, "password must be at least 8 chars"],
+        minlength: [8, "Password must be at least 8 chars"],
         select: false
     },
-    role: {
-        type: String,
-        enum: Object.values(AuthRoles),
-        default: AuthRoles.USER
+    is_active: {
+        type: Boolean,
+        default: true
+    },
+    is_paid: {
+        type: Boolean,
+        default: false
     },
     phoneNumber: {
         type: String,
-        required: [true, "Please enter a valid phone number"]
+        required: [true, "Please enter a valid phone number"],
+        validate: {
+            validator: function(value) {
+                return /^\d{10}$/.test(value);
+            },
+            message: "Please enter a valid phone number"
+        }
     },
     address: [
         {
@@ -39,9 +59,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    refreshToken: {
+        type: String
+    },
     forgotPasswordToken: String,
     forgotPasswordExpiry: Date
-}, {timestamps: true})
+}, { timestamps: true });
+
 
 userSchema.pre("save", async function(next){
     if (!this.isModified("password")) return next()
@@ -70,6 +94,33 @@ userSchema.methods = {
         this.forgotPasswordExpiry = Date.now() + 20 * 60 * 1000
 
         return forgotToken
+    },
+
+    generateAccessToken : function(){
+        return JWT.sign(
+            {
+                _id: this._id,
+                email: this.email,
+                username: this.username,
+                name: this.name
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: config.JWT_EXPIRY
+            }
+        )
+    },
+
+    generateRefeshToken : function(){
+        return JWT.sign(
+            {
+                _id: this._id,
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: config.JWT_EXPIRY
+            }
+        )
     }
 }
 
