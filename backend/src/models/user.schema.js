@@ -104,7 +104,7 @@ userSchema.methods = {
                 username: this.username,
                 name: this.name
             },
-            process.env.JWT_SECRET,
+            config.JWT_SECRET,
             {
                 expiresIn: config.JWT_EXPIRY
             }
@@ -116,9 +116,9 @@ userSchema.methods = {
             {
                 _id: this._id,
             },
-            process.env.JWT_SECRET,
+            config.REFRESH_TOKEN_SECRET,
             {
-                expiresIn: config.JWT_EXPIRY
+                expiresIn: config.REFRESH_TOKEN_EXPIRY
             }
         )
     }

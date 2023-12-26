@@ -4,8 +4,11 @@ import CustomError from '../services/CustomError.js'
 import crypto from "crypto"
 import cloudinary from "../config/cloudinary.config.js";
 import config from './../config/index.js';
+import JWT from "jsonwebtoken";
 
-
+/**
+ * Generates access and refresh tokens for a given user ID.
+ */
 const generateAccessAndRefereshTokens = async(userId) =>{
     try {
         const user = await User.findById(userId)
@@ -23,7 +26,11 @@ const generateAccessAndRefereshTokens = async(userId) =>{
     }
 }
 
-
+/**
+ * Handles user sign-up, creating a new user profile.
+ * Validates required fields and checks for existing users.
+ * Registers a new user and returns a success message along with user details (excluding sensitive data like password and refresh token).
+ */
 const signUp = asyncHandler(async (req, res) => {
   const { name,username, email, password, phoneNumber } = req.body;
 
@@ -62,6 +69,12 @@ const signUp = asyncHandler(async (req, res) => {
   })
 });
 
+/**
+ * Manages user login functionality.
+ * Validates provided username and password.
+ * Checks credentials and generates access and refresh tokens upon successful login.
+ * Returns user details (excluding sensitive data like password and refresh token) along with access and refresh tokens as cookies.
+ */
 const login = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
 
@@ -103,7 +116,10 @@ const login = asyncHandler(async (req, res) => {
         });
 });
 
-
+/**
+ * Handles user logout by invalidating the refresh token.
+ * Clears access and refresh token cookies upon successful logout.
+ */
 const logout = asyncHandler(async (req, res) => {
     
     await User.findByIdAndUpdate(
@@ -131,6 +147,10 @@ const logout = asyncHandler(async (req, res) => {
     })
 })
 
+/**
+ * Retrieves the profile details of the currently logged-in user.
+ * Returns user information for the authenticated user.
+ */
 const getProfile = asyncHandler( async(req, res) => {
     const user = req.user
     return res
@@ -143,6 +163,11 @@ const getProfile = asyncHandler( async(req, res) => {
 
 })
 
+/**
+ * Updates the address information for the logged-in user.
+ * Retrieves the user information from the request and updates the address details.
+ * Returns a success message along with the updated user information (excluding sensitive data like password and refresh token).
+ */
 const updateUserAddress = asyncHandler( async (req, res) => {
     const { user : userinfo } = req
     const { address } = req.body
@@ -173,6 +198,12 @@ const updateUserAddress = asyncHandler( async (req, res) => {
     })
 })
 
+/**
+ * Updates the profile image for the logged-in user.
+ * Parses the form data using 'formidable' to handle file uploads.
+ * Retrieves the user information from the request and uploads the new profile image to Cloudinary.
+ * Updates the user's profile image URL and returns a success message along with the updated user information.
+ */
 const updateProfileImage = asyncHandler(async (req, res) => {
     const form = formidable({ multiples: true, keepExtensions: true });
 
@@ -198,6 +229,81 @@ const updateProfileImage = asyncHandler(async (req, res) => {
     })
 })
 
+/**
+ * Refreshes the access token using the provided refresh token.
+ * Retrieves the refresh token from cookies or the request body.
+ * Verifies the refresh token, generates a new access token, and returns it.
+ */
+const refreshAccessToken = asyncHandler( async (req, res) => {
+    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
+
+    if (!incomingRefreshToken) {
+        throw new CustomError("Unauthorized request", 401);
+    }
+
+    try {
+        const decodedToken = JWT.verify(
+            incomingRefreshToken,
+            config.REFRESH_TOKEN_SECRET
+        )
+        
+        const user = await User.findById(decodedToken?._id)
+
+        if(!user) {
+            throw new CustomError("Invalid refresh token", 401);
+        }
+
+        if (incomingRefreshToken !== user?.refreshToken) {
+            throw new CustomError("Refresh token has expired", 401)
+        }
+
+        const options = {
+            httpOnly: true,
+            secure: true
+        }
+    
+        const {accessToken, refreshToken} = await generateAccessAndRefereshTokens(user._id)
+
+        return res
+        .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json({
+            success: true,
+            message: "Access token has been refreshed successfully",
+            accessToken,
+            refreshToken,
+        })
+    } catch (error) {
+        throw new CustomError("Invalid refresh token" || error?.message,401)
+    }
+})
+
+/**
+ * Changes the current user's password.
+ * Validates the old password, ensuring it matches before changing to a new password.
+ */
+const changeCurrentPassword = asyncHandler(async(req, res) => {
+    const {oldPassword, newPassword} = req.body
+
+    const user = await User.findById(req.user?._id).select('+password')
+    
+    const isPasswordCorrect = await user.comparePassword(oldPassword)
+    
+    if (!isPasswordCorrect) {
+        throw new CustomError("Old password is incorrect",400)
+    }
+
+    user.password = newPassword
+    await user.save({validateBeforeSave: false})
+
+    return res
+    .status(200)
+    .json({
+        success: true,
+        message: "Password changed successfully"
+    })
+})
 
 export {
     signUp,
@@ -205,6 +311,8 @@ export {
     logout,
     getProfile,
     updateProfileImage,
-    updateUserAddress
+    updateUserAddress,
+    refreshAccessToken,
+    changeCurrentPassword
 
 }
