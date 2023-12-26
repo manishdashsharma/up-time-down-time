@@ -1,0 +1,190 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Up Time Down Time Documentation",
+    "description": "Up-Time-Down-Time is a comprehensive project designed to monitor website uptime and downtime",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/",
+      "description": "Local server"
+    },
+    {
+      "url": "https://up-time-down-time-n6ky87t9d-manishdashsharma.vercel.app/",
+      "description": "Production server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Health Check",
+      "description": "Endpoints related to system health check"
+    },
+    {
+      "name": "Authentication",
+      "description": "Endpoints related to user authentication"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "Endpoints related to system health check",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags":["Health Check"]
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "username": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "phoneNumber": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags":["Authentication"]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags":["Authentication"]
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags":["Authentication"]
+      }
+    },
+    "/auth/profile": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags":["Authentication"]
+      }
+    },
+    "/auth/update-address": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags":["Authentication"]
+      }
+    },
+    "/auth/update-profile-image": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags":["Authentication"]
+      }
+    }
+  }
+}
