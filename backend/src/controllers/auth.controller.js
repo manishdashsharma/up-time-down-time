@@ -96,7 +96,7 @@ const login = asyncHandler(async (req, res) => {
 
     const user = await User.findById(users._id).select("-password -refreshToken");
 
-    const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(users._id.toString());
+    const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(users._id);
 
     const cookieOptions = {
         httpOnly: true,
