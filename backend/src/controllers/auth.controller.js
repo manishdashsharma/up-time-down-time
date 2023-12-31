@@ -175,7 +175,6 @@ const updateUserAddress = asyncHandler( async (req, res) => {
     if(!userinfo) {
       new CustomError("User not found",404)
     }
-    console.log(userinfo._id);
   
     const user = await User.findByIdAndUpdate(
       userinfo._id, { address } ,
@@ -314,5 +313,4 @@ export {
     updateUserAddress,
     refreshAccessToken,
     changeCurrentPassword
-
 }
